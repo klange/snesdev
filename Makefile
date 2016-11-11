@@ -17,12 +17,16 @@ LIBDIR=$(PREFIX)/lib
 
 ASMOBJ = data.obj
 COBJ = snesc.obj input.obj init.obj graph.obj str.obj
+ACOBJ = arena.obj input.obj init.obj graph.obj str.obj
 
 all: snesc.smc
 #	$(EMU) snesc.smc || xset r on
 
 snesc.smc: $(ASMOBJ) $(COBJ)
 	$(LD) -dvSo $(ASMOBJ) $(COBJ) snesc.smc
+
+arena.smc: $(ASMOBJ) $(ACOBJ)
+	$(LD) -dvSo $(ASMOBJ) $(ACOBJ) arena.smc
 
 %.s: %.c
 	$(CC) $(CFLAGS) -I. -I$(PREFIX)/include -o $@ -c $<
@@ -34,3 +38,6 @@ snesc.smc: $(ASMOBJ) $(COBJ)
 
 clean:
 	rm -f snesc.smc snesc.sym $(ASMOBJ) $(COBJ) *.s
+
+clean_arena:
+	rm -f arena.smc arena.sym $(ASMOBJ) $(ACOBJ) *.s
